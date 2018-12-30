@@ -7,6 +7,8 @@ class Game(models.Model):
     name = models.CharField(max_length=128, unique=True)
     purchases = models.IntegerField(default=0)
     slug = models.SlugField()
+    description = models.TextField(default="", max_length=500)
+    logo = models.ImageField(upload_to="images/", blank=True)
     def __str__(self):
         return self.name
     def save(self, *args, **kwargs):

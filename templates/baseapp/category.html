@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+{{ game.name }}
+{% endblock %}
+{% block body_block %}
+{% if category %}
+<h1 class="text-center">{{ category.title }}</h1>
+{% if offers %}
+{% for offer in offers %}
+  <div class="row">
+    <div class="card w-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ offer.title }}</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="{% url 'categories' game.slug category.slug %}" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% else %}
+  <p>Categories does not exist</p>
+{% endif %}
+{% else %}
+  <p>Game does not exist</p>
+{% endif %}
+{% endblock %}
