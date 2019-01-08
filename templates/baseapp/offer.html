@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+{% if offer %}
+{{ offer.title }}
+{% endif %}
+{% endblock %}
+{% block body_block %}
+{% if offer %}
+<a href="{% url 'profile' offer.user %}">{{ offer.user }}</a>
+<p>{{ offer.type }}</p>
+{% if offer.type == "Base" %}
+
+{% else %}
+<output for="quantityrange" class="output oquantity">0</output>
+<label for="quantityrange">
+  <input type="range" id="quantityrange" name="quantityrange" step="{{ offer.rangestep }}" value=0 min=0 max="{{ offer.quantity }}" data="{{ price }}">
+</label>
+<output for="quantityrange" class="output oprice">0</output>
+{% endif %}
+<button type="button" class="btnblack" name="button">Purchase</button>
+{{ offer.description }}
+{% else %}
+<p>Offer does not exist</p>
+{% endif %}
+{% endblock %}

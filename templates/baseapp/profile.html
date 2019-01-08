@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+{% if user %}
+{{ user.username }}
+{% endif %}
+{% endblock %}
+{% block body_block %}
+{% if user %}
+<h3>{{ user.username }}</h3>
+{% if offers %}
+<h4>{{ user.username }}'s offers:</h4>
+<table class="table table-striped">
+  <tr>
+    <td>Title</td>
+    <td>Quantity</td>
+    <td>Price</td>
+    <td>Publish date</td>
+  </tr>
+  {% for offer in offers %}
+  <tr>
+    <td><a href="{% url 'offer' offer.id %}">{{ offer.title }}</a></td>
+    <td>{% if offer.quantity %}
+        {{ offer.quantity }}
+        {% else %}
+        1
+        {% endif %}</td>
+    <td>{{ offer.price }}</td>
+    <td> <time class="timeago" datetime="{{ offer.datetime|date:"c" }}" title="{{ offer.datetime|date:"F d, o" }}"></time> </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% else %}
+<p>User does not exist</p>
+{% endif %}
+{% endblock %}

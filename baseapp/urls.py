@@ -21,6 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<game_name_url>/', views.games, name="games"),
-    path('<game_name_url>/<category_name_url>/', views.categories, name="categories")
+    path('marketplace/<game_name_url>/', views.games, name='games'),
+    path('marketplace/<game_name_url>/<category_name_url>/', views.categories, name='categories'),
+    path('offer/<offer_id>/', views.offer, name='offer'),
+    path('members/<username>/', views.profile, name='profile'),
+    path('singup', views.singup, name='singup'),
 ]

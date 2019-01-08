@@ -5,7 +5,23 @@
 
 <head>
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/ico">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src="{% static 'js/jquery.min.js' %}"></script>
+  <script type='text/javascript' src="{% static 'js/jquery.timeago.js' %}"></script>
+  <script type='text/javascript' src="{% static 'js/rangelabel.js' %}"></script>
+  <script type='text/javascript'>
+    jQuery(document).ready(function($) {
+      $("time.timeago").timeago();
+    });
+  </script>
+  <script>
+    $(document).ready( function() {
+      $("#quantityrange").mousemove(function() {
+        $('.oquantity').text(this.value);
+        var s = $(this).attr('data');
+        $('.oprice').text(this.value*s);
+      });
+    });
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -17,7 +33,7 @@
 </head>
 
 <body class="keklol">
-    {% include "header.html" %}
+  {% include "header.html" %}
   <div class="container">
     {% block body_block %}
     {% endblock %}

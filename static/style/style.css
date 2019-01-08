@@ -1,16 +1,40 @@
 body {
   padding-top: 70px;
 }
+
 .drop-acc {
   padding-right: 50px;
 }
-@media only screen
-  and (max-width: 1000px) {
-    .logo {
-      width: 215px;
-      height: 150px;
-    }
+
+@media only screen and (max-width: 1000px) {
+  .logo {
+    width: 215px;
+    height: 150px;
+  }
 }
+
 .card {
   margin: 5px 0;
+}
+
+#btnblack {
+  background-color: black;
+}
+
+.helptext {
+  display: none;
+}
+.submission-form {
+  margin: auto;
+  width: 40%;
+}
+.submission-form p {
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (max-width: 1000px) {
+  .submission-form {
+    margin: auto;
+    width: 60%;
+  }
 }
