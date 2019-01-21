@@ -6,11 +6,16 @@
 {% endif %}
 {% endblock %}
 {% block body_block %}
+{% if messages %}
+{% for message in messages %}
+<p{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</p>
+{% endfor %}
+{% endif %}
 {% if offer %}
 <a href="{% url 'profile' offer.user %}">{{ offer.user }}</a>
 <p>{{ offer.type }}</p>
 {% if offer.type == "Base" %}
-
+<p>Price {{ offer.price }}</p>
 {% else %}
 <output for="quantityrange" class="output oquantity">0</output>
 <label for="quantityrange">
@@ -18,7 +23,10 @@
 </label>
 <output for="quantityrange" class="output oprice">0</output>
 {% endif %}
-<button type="button" class="btnblack" name="button">Purchase</button>
+{% if user.username == offer.user.username %}
+{% else %}
+<button onclick="location.href=&quot{% url 'purchase' offer.id %}&quot" type="button" class="btnblack" name="button">Purchase</button>
+{% endif %}
 {{ offer.description }}
 {% else %}
 <p>Offer does not exist</p>

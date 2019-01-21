@@ -2,34 +2,91 @@
 {% load staticfiles %}
 {% block title_block %}
 {% if user %}
-{{ user.username }}
+{{ user_account.username }}
 {% endif %}
 {% endblock %}
 {% block body_block %}
 {% if user %}
-<h3>{{ user.username }}</h3>
+<h3>{{ user_profile.username }}</h3>
+{% if user_profile.avatar %}
+<img src="{{ user_profile.avatar.url }}" alt="">
+{% if user_profile.username == user.username %}
+<p>{{ user_profile.money }} <button onclick="location.href=&quot{% url 'add_money' user.username %}&quot" type="button" name="button">Add money</button>
+<button onclick="location.href=&quot{% url 'zero_money' user.username %}&quot" type="button" name="button">Zero money</button></p>
+{% endif %}
+{% endif %}
 {% if offers %}
-<h4>{{ user.username }}'s offers:</h4>
+{% if user_profile.username == user.username %}
+<h4>Your offers:</h4>
+{% else %}
+<h4>{{ user_profile.username }}'s offers:</h4>
+{% endif %}
+
 <table class="table table-striped">
   <tr>
     <td>Title</td>
     <td>Quantity</td>
     <td>Price</td>
     <td>Publish date</td>
+    {% if user_profile.username == user.username %}
+    <td>Pause</td>
+    <td>Delete</td>
+    {% endif %}
   </tr>
   {% for offer in offers %}
   <tr>
     <td><a href="{% url 'offer' offer.id %}">{{ offer.title }}</a></td>
-    <td>{% if offer.quantity %}
-        {{ offer.quantity }}
-        {% else %}
-        1
-        {% endif %}</td>
+    <td>
+      {% if offer.quantity %}
+      {{ offer.quantity }}
+      {% else %}
+      1
+      {% endif %}</td>
     <td>{{ offer.price }}</td>
     <td> <time class="timeago" datetime="{{ offer.datetime|date:"c" }}" title="{{ offer.datetime|date:"F d, o" }}"></time> </td>
+    {% if user_profile.username == user.username %}
+    <td>
+      {% if offer.active %}
+      <button type="button" data="{{ offer.id }}" class="active-btn pause-btn"></button>
+      {% else %}
+      <button type="button" data="{{ offer.id }}" class="active-btn play-btn"></button>
+      {% endif %}
+    </td>
+    <td><button type="button" data="{{ offer.id }}" class="active-btn delete-btn"></button></td>
+    {% endif %}
   </tr>
   {% endfor %}
 </table>
+{% else %}
+<p>No offers yet.</p>
+{% endif %}
+{% if purchases %}
+{% if user_profile.username == user.username %}
+<h4>Your purchases:</h4>
+<table class="table table-striped">
+  <tr>
+    <td>Title</td>
+    <td>Quantity</td>
+    <td>Price</td>
+    <td>Seller</td>
+    <td>Purchase date</td>
+  </tr>
+  {% for purchase in purchases  %}
+  <tr>
+    <td>{{ purchase.offer_title }}</td>
+    <td>
+      {% if purchase.purchase_quantity %}
+      {{ purchase.purchase_quantity }}
+      {% else %}
+      1
+      {% endif %}</td>
+    <td>{{ purchase.offer_price }}</td>
+    <td>{{ purchase.offer_seller }}</td>
+    <td> <time class="timeago" datetime="{{ purchase.date|date:"c" }}" title="{{ purchase.date|date:"F d, o" }}"></time> </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
 {% endif %}
 {% else %}
 <p>User does not exist</p>

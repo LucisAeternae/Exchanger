@@ -13,8 +13,49 @@ body {
   }
 }
 
+.empty_wrong_p {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.card-center{
+  text-align: center;
+}
+
+#hidden {
+  display: none;
+}
+
+.pause-btn {
+  cursor: pointer;
+  background: url(../images/pause.png) no-repeat center top;
+  border-radius: 50%;
+  border: none;
+  height: 32px;
+  width: 32px;
+}
+
+.play-btn {
+  cursor: pointer;
+  background: url(../images/play.png) no-repeat center top;
+  border-radius: 50%;
+  border: none;
+  height: 32px;
+  width: 32px;
+}
+
+.delete-btn {
+  cursor: pointer;
+  background: url(../images/delete.png) no-repeat center top;
+  border-radius: 50%;
+  border: none;
+  height: 32px;
+  width: 32px;
+}
+
 .card {
-  margin: 5px 0;
+  margin: 0;
 }
 
 #btnblack {

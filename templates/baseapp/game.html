@@ -4,6 +4,11 @@
 {{ game.name }}
 {% endblock %}
 {% block body_block %}
+{% if messages %}
+{% for message in messages %}
+<p {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</p>
+{% endfor %}
+{% endif %}
 {% if game %}
 <h1 class="text-center">{{ game.name }}</h1>
 {% if categories %}
@@ -18,6 +23,15 @@
     </div>
   </div>
 {% endfor %}
+<div class="row">
+  <div class="card w-100">
+    <div class="card-body">
+      <h5 class="card-title">Add category</h5>
+      <p class="card-text">You can add new category.</p>
+      <a href="{% url 'add_category' %}" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+</div>
 {% else %}
   <p>Categories does not exist</p>
 {% endif %}

@@ -4,16 +4,31 @@
 Games
 {% endblock %}
 {% block body_block %}
-<div class="row">
-{% for game in games %}
-    <div class="card text-center w-50">
-      <div class="card-body">
-        <h5 class="card-title">{{ game.name }}</h5>
-        <p><a href="{% url 'games' game.slug %}"><img class="img-responsive logo" src="{{ game.logo.url }}" width="430" height="300" alt=""></a></p>
-        <p class="card-text">{{ game.description }}</p>
-        <a href="{% url 'games' game.slug %}" class="btn btn-primary">To Game</a>
-      </div>
-    </div>
+{% if messages %}
+{% for message in messages %}
+<p {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</p>
 {% endfor %}
+{% endif %}
+<div class="row">
+  {% for game in games %}
+  <div class="card text-center w-50">
+    <div class="card-body">
+      <h5 class="card-title">{{ game.name }}</h5>
+      <p><a href="{% url 'games' game.slug %}"><img class="img-responsive logo" src="{% if game.logo %}{{ game.logo.url }}{% else %}{% static 'images/no_image.jpg' %}{% endif %}" width="350" height="350" alt=""></a></p>
+      <p class="card-text">{{ game.description }}</p>
+      <a href="{% url 'games' game.slug %}" class="btn btn-primary">To Game</a>
+    </div>
+  </div>
+  {% endfor %}
+  {% if user.is_staff %}
+  <div class="card text-center w-50">
+    <div class="card-body">
+      <h5 class="card-title">Add new game</h5>
+      <p><a href="{% url 'add_game' %}"><img class="img-responsive logo" src="{% static 'images/add_new.png' %}" width="350" height="350" alt=""></a></p>
+      <p class="card-text">You can add new game</p>
+      <a href="{% url 'add_game' %}" class="btn btn-primary">To Game</a>
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

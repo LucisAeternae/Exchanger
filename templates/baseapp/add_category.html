@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Add new category
+{% endblock %}
+{% block body_block %}
+<form action="" method="post" class="submission-form">
+  {% csrf_token %}
+  {{ new_category_form.as_p }}
+  <input type="submit" value="Submit">
+</form>
+{% endblock %}

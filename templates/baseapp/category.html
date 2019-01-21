@@ -1,27 +1,48 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block title_block %}
-{{ game.name }}
+{% if category %}
+{{ game.name }} {{ category.title }}
+{% else %}
+Game does not exist
+{% endif %}
 {% endblock %}
 {% block body_block %}
+{% if messages %}
+{% for message in messages %}
+<p {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% if game %}
 {% if category %}
 <h1 class="text-center">{{ category.title }}</h1>
 {% if offers %}
 {% for offer in offers %}
-  <div class="row">
-    <div class="card w-100">
-      <div class="card-body">
-        <h5 class="card-title">{{ offer.title }}</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="{% url 'offer' offer.id %}" class="btn btn-primary">Go somewhere</a>
-      </div>
+<div class="row">
+  <div class="card w-100">
+    <div class="card-body">
+      <h5 class="card-title">{{ offer.title }}</h5>
+      <p class="card-text">{{ offer.description }}</p>
+      <a href="{% url 'offer' offer.id %}" class="btn btn-primary">Go somewhere</a>
     </div>
   </div>
+</div>
 {% endfor %}
 {% else %}
-  <p>Categories does not exist</p>
+<p class="empty_wrong_p">No offers yet</p>
+{% endif %}
+<div class="row justify-content-md-center">
+  <div class="card border-light">
+    <div class="card-body card-center">
+      <p class="card-text">You can add new offer</p>
+        <a href="{% url 'add_offer' game.slug category.slug %}" class="btn btn-secondary">Add offer</a>
+    </div>
+  </div>
+</div>
+{% else %}
+<p class="empty_wrong_p">Categories does not exist</p>
 {% endif %}
 {% else %}
-  <p>Game does not exist</p>
+<p class="empty_wrong_p">Game does not exist</p>
 {% endif %}
 {% endblock %}

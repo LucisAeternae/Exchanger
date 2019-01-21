@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load staticfiles %}
+{% block title_block %}
+Add new game
+{% endblock %}
 {% block body_block %}
-{% if registered %}
-  You register successful!
-<a href="{% url 'index' %}"></a>
-{% else %}
 <form action="" method="post" class="submission-form" enctype="multipart/form-data">
   {% csrf_token %}
-  {{ user_form.as_p }}
-  {{ profile_form.as_p }}
+  {{ new_game_form.as_p }}
   <input type="submit" value="Submit">
 </form>
-{% endif %}
 {% endblock %}

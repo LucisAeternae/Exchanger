@@ -18,7 +18,9 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+LOGIN_URL = '/signin/'
+CURRENCIES = ('USD')
+CURRENCY_CHOICES = [('USD', 'USD $')]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -54,6 +56,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'stock_exchange.urls'
+
+AUTH_USER_MODEL = 'baseapp.CustomUser'
 
 TEMPLATES = [
     {

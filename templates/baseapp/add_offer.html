@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Add new offer
+{% endblock %}
+{% block body_block %}
+{% if offer_added %}
+  Creating new offer was successful!
+<a href="{% url 'categories' game.slug category.slug %}"></a>
+{% else %}
+{% if game %}
+{% if category %}
+<form action="" method="post" class="submission-form">
+  {% csrf_token %}
+  {{ baseoffer_form.as_p }}
+  <span id="hidden">
+    {{ customoffer_form.as_p }}
+  </span>
+  <input type="submit" value="Submit">
+</form>
+{% else %}
+Category does not exist!
+{% endif %}
+{% else %}
+Game does not exist!
+{% endif %}
+{% endif %}
+{% endblock %}

@@ -2,13 +2,13 @@
 {% load static %}
 {% block body_block %}
 {% if registered %}
-  You register successful!
+You already registered!
 <a href="{% url 'index' %}"></a>
 {% else %}
-<form action="" method="post" class="submission-form" enctype="multipart/form-data">
+<form action="" method="post" class="submission-form">
   {% csrf_token %}
-  {{ user_form.as_p }}
-  {{ profile_form.as_p }}
+  <p>Username: <input type="text" name="username" value=""></p>
+  <p>Password: <input type="password" name="password" value=""></p>
   <input type="submit" value="Submit">
 </form>
 {% endif %}
