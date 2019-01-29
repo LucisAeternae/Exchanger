@@ -1,5 +1,9 @@
-{% extends 'header.html' %}
-{% load staticfiles %}
-{% block search_block %}
-<p>lel</p>
-{% endblock %}
+{% if offers %}
+{% for offer in offers %}
+{% if offer.active %}
+<p><a href="{% url 'offer' offer.id %}">{{ offer.title }}</a></p>
+{% endif %}
+{% endfor %}
+{% else %}
+<p>Try to search some offers</p>
+{% endif %}

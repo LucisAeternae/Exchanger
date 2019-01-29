@@ -9,7 +9,7 @@ Games
 <p {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</p>
 {% endfor %}
 {% endif %}
-<div class="row">
+<div class="row notloggedin2">
   {% for game in games %}
   <div class="card text-center w-50">
     <div class="card-body">
@@ -26,7 +26,7 @@ Games
       <h5 class="card-title">Add new game</h5>
       <p><a href="{% url 'add_game' %}"><img class="img-responsive logo" src="{% static 'images/add_new.png' %}" width="350" height="350" alt=""></a></p>
       <p class="card-text">You can add new game</p>
-      <a href="{% url 'add_game' %}" class="btn btn-primary">To Game</a>
+      <a href="{% url 'add_game' %}" class="btn btn-primary">Add game</a>
     </div>
   </div>
   {% endif %}

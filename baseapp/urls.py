@@ -27,6 +27,7 @@ urlpatterns = [
     path('members/<username>/', views.profile, name='profile'),
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
+    path('signin_ajax/', views.signin_ajax, name='signin_ajax'),
     path('user_logout/', views.user_logout, name='user_logout'),
     path('marketplace/<game_name_url>/<category_name_url>/add_offer/', views.add_offer, name='add_offer'),
     path('ajax/offer_status_change/', views.offer_status_change, name='offer_status_change'),

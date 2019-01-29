@@ -91,7 +91,7 @@ class Offer(models.Model):
 class Purchases(models.Model):
     customer = models.ForeignKey(Profile, on_delete=models.PROTECT)
     offer_title = models.CharField(max_length=200)
-    offer_seller = models.CharField(unique=True, max_length=191)
+    offer_seller = models.CharField(max_length=191)
     offer_price = MoneyField(decimal_places=2,
         default=0,
         default_currency='USD',

@@ -27,6 +27,28 @@ body {
   display: none;
 }
 
+.hidden {
+  display: none;
+}
+
+#search_field {
+  position: absolute;
+  background: white;
+  border: solid 0.1px grey;
+  top: 50px;
+  width: 190px;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+.ui-dialog {
+  text-align: center;
+  border: solid 0.1px gray;
+  background: white;
+}
+
 .pause-btn {
   cursor: pointer;
   background: url(../images/pause.png) no-repeat center top;

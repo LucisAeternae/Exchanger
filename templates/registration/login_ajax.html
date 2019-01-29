@@ -1,0 +1,6 @@
+<form  method="POST" id="login_ajax">
+  {% csrf_token %}
+  <p>Username: <input type="text" name="username" id="username" value=""></p>
+  <p>Password: <input type="password" name="password" id="password" value=""></p>
+  <input type="submit" value="Submit">
+</form>

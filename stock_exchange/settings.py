@@ -59,6 +59,8 @@ ROOT_URLCONF = 'stock_exchange.urls'
 
 AUTH_USER_MODEL = 'baseapp.CustomUser'
 
+AUTHENTICATION_BACKENDS = ['baseapp.backends.EmailOrUsernameBackend']
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

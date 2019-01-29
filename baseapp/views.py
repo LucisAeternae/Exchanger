@@ -94,6 +94,8 @@ def signup(request):
                 profile.save()
                 registered = True
                 login(request, user)
+                messages.success(request, 'You was successful registered!')
+                return HttpResponseRedirect(reverse('index'))
             else:
                 print(user_form.errors, profile_form.errors)
         else:
@@ -113,8 +115,6 @@ def signin(request):
         next_page = False
     if request.user.is_authenticated:
         return HttpResponseRedirect(next_page)
-    if request.user.is_authenticated:
-        return HttpResponse('Your already logged in. <br><a href="/">Index</a>')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -135,6 +135,30 @@ def signin(request):
         else:
             return render(request, 'registration/login.html', context=context_dict)
 
+def signin_ajax(request):
+    if request.user.is_authenticated:
+        return
+    else:
+        data = {
+        'Fail' : False,
+        'user' : False
+        }
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    data['user'] = user.username
+                else:
+                    data['Fail'] = 'User is disabled'
+            else:
+                data['Fail'] = 'Invalid login details'
+        else:
+            data['Fail'] = 'nothing'
+    return JsonResponse(data)
+
 @login_required
 def user_logout(request):
     logout(request)
@@ -146,7 +170,6 @@ def add_offer(request, game_name_url, category_name_url):
     customoffer_form = CustomOfferForm(data=request.POST)
     game = False
     category = False
-    offer_added = False
     try:
         game = Game.objects.get(slug=game_name_url)
         try:
@@ -176,7 +199,9 @@ def add_offer(request, game_name_url, category_name_url):
                                              quantity=quantity,
                                              rangestep=rangestep, user=user,
                                              category=category)
-            offer_added = True
+            messages.success(request, 'Adding new offer was success!')
+            return HttpResponseRedirect(reverse('categories',
+                                    args=[game_name_url, category_name_url]))
         else:
             print(baseoffer_form.errors)
     else:
@@ -187,8 +212,7 @@ def add_offer(request, game_name_url, category_name_url):
                   {'baseoffer_form': baseoffer_form,
                    'customoffer_form': customoffer_form,
                    'game': game,
-                   'category': category,
-                   'offer_added': offer_added})
+                   'category': category})
 
 def offer_status_change(request):
     username = request.user.username
@@ -213,11 +237,24 @@ def offer_status_change(request):
             data['delete'] = True
     return JsonResponse(data)
 
+def transaction(target, amount, secondtarget=False):
+    if secondtarget:
+        target.money += Money(amount, 'USD')
+        secondtarget.money -= Money(amount, 'USD')
+        print('inside transaction before save', amount, target.username, secondtarget.username)
+        target.save()
+        secondtarget.save()
+        print('inside transaction after save', amount, target.money, secondtarget.money)
+        return
+    else:
+        target.money += Money(amount, 'USD')
+        target.save()
+        return
+
 def add_money(request, username):
     if request.user.username == username:
         profile = Profile.objects.get(username=username)
-        profile.money += Money(1000, 'USD')
-        profile.save()
+        transaction(profile, 1000)
     return HttpResponseRedirect(reverse('profile', args=[username]))
 
 def zero_money(request, username):
@@ -241,19 +278,16 @@ def purchase(request, offer_id, quantity=0):
     if request.user.username == offer.user.username:
         messages.warning(request, 'You cannot buy from yourself!')
         return HttpResponseRedirect(reverse('offer', args=[offer.id]))
-    if offer.type == 'base':
+    if offer.type == 'Base':
         if profile.money < offer.price:
             messages.warning(request, 'Not enough money!')
             return HttpResponseRedirect(reverse('offer', args=[offer.id]))
         else:
             seller = Profile.objects.get(username=offer.user.username)
-            profile.money -= offer.price
-            seller.money += offer.price
+            transaction(seller, offer.price.amount, profile)
             Purchases.objects.create(customer=profile,offer_title=offer.title,
                         offer_seller=seller.username,
                         offer_price=offer.price)
-            profile.save()
-            seller.save()
             offer.delete()
             messages.success(request, 'Purchase is success!')
             return HttpResponseRedirect(reverse('index'))
@@ -270,9 +304,8 @@ def purchase(request, offer_id, quantity=0):
                 return HttpResponseRedirect(reverse('offer', args=[offer.id]))
             else:
                 seller = Profile.objects.get(username=offer.user.username)
-                total_price = offer.price*quantity
-                profile.money -= total_price
-                seller.money += total_price
+                total_price = offer.price.amount*quantity
+                transaction(seller, total_price, profile)
                 Purchases.objects.create(customer=profile,
                             offer_title=offer.title,
                             offer_seller=seller.username, offer_type='Custom',
@@ -283,8 +316,6 @@ def purchase(request, offer_id, quantity=0):
                 else:
                     offer.quantity -= quantity
                     offer.save()
-                profile.save()
-                seller.save()
                 messages.success(request, 'Purchase is success!')
                 return HttpResponseRedirect(reverse('index'))
         return HttpResponseRedirect(reverse('offer', args=[offer.id]))
@@ -336,12 +367,10 @@ def get_offer_list(max_results=0, query=''):
     return offers_list
 
 def search(request):
-
     offers = []
     contains = ''
     if request.method == 'GET':
         contains = request.GET['suggestion']
-        print(contains)
     offers = get_offer_list(8, contains)
     return render(request, 'baseapp/offers.html',
                   {'offers': offers})

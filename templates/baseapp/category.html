@@ -8,11 +8,6 @@ Game does not exist
 {% endif %}
 {% endblock %}
 {% block body_block %}
-{% if messages %}
-{% for message in messages %}
-<p {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</p>
-{% endfor %}
-{% endif %}
 {% if game %}
 {% if category %}
 <h1 class="text-center">{{ category.title }}</h1>
